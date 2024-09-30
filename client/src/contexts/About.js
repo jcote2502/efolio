@@ -14,26 +14,6 @@ export const AboutProvider = ({ children }) => {
         setRefresh(!refresh);
     };
 
-    // Fetch about section for the site
-    const fetchAbout = async () => {
-        try {
-            const response = await fetch(`${route}/site-about`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch about section');
-            }
-            const data = await response.json();
-            setAbout(data);
-        } catch (error) {
-            console.error('Error fetching about section', error);
-        }
-    };
-
     const addSection = async (newSection) => {
         const token = getAuthToken();
         console.log(newSection);
@@ -127,8 +107,26 @@ export const AboutProvider = ({ children }) => {
 
     // Fetch about section on component mount
     useEffect(() => {
+        async function fetchAbout() {
+            try {
+                const response = await fetch(`${route}/site-about`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Failed to fetch about section');
+                }
+                const data = await response.json();
+                setAbout(data);
+            } catch (error) {
+                console.error('Error fetching about section', error);
+            }
+        }
         fetchAbout();
-    }, [refresh]);
+    }, [refresh,route]);
 
     return (
         <AboutContext.Provider value={{ about, addSection, deleteSection, updateSection }}>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Flex, HStack, Text, useDisclosure, VStack } from "@chakra-ui/react";
+import { HStack, Text, useDisclosure, VStack } from "@chakra-ui/react";
 import PageFrame, { PageButton } from '../components/Frame';
 import { useAbout } from '../contexts/About';
 import EditModal from '../components/modals/EditModal';

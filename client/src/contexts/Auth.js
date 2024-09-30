@@ -9,9 +9,9 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isLoggedIn, setIsloggedIn] = useState(false);
-    const [error, setError] = useState(null);
+    // const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const route = process.env.REACT_APP_API_URL ? `${process.env.REACT_APP_API_URL}/users` :  '/api/users';
+    const route = process.env.REACT_APP_API_URL ? `${process.env.REACT_APP_API_URL}/users` : '/api/users';
 
     // Fetch user with token from the backend (e.g., on page load)
     const fetchUserWithToken = useCallback(async () => {
@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }) => {
             destroyAuthToken();
             setUser(null);
             setIsloggedIn(false);
-            navigate("/");
         }
     }, [route]);
 
@@ -75,7 +74,7 @@ export const AuthProvider = ({ children }) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token 
+                    Authorization: token
                 },
             });
             if (!response.ok) {
@@ -125,7 +124,7 @@ export const AuthProvider = ({ children }) => {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token 
+                    Authorization: token
                 },
                 body: JSON.stringify({ newEmail, password })
             });
@@ -146,9 +145,9 @@ export const AuthProvider = ({ children }) => {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token 
+                    Authorization: token
                 },
-                body: JSON.stringify({newInfo})
+                body: JSON.stringify({ newInfo })
             });
             if (!response.ok) {
                 throw new Error('Failed to update profile info');
@@ -166,9 +165,9 @@ export const AuthProvider = ({ children }) => {
 
         // Append data to FormData object
         formData.append('image', newFile); // File is passed here
-        if (field === 'headshot'){
+        if (field === 'headshot') {
             formData.append('previousHref', user.headshot || null);
-        }else if (field === 'banner'){
+        } else if (field === 'banner') {
             formData.append('previousHref', user.banner || null);
         }
         formData.append('field', field);
@@ -195,7 +194,7 @@ export const AuthProvider = ({ children }) => {
 
     // Check for token in localStorage on load and fetch user
     useEffect(() => {
-        const fetchUserInfo = async () => {
+        async function fetchUserInfo() {
             try {
                 const response = await fetch(`${route}/site-info`);
                 if (!response.ok) {
@@ -207,13 +206,37 @@ export const AuthProvider = ({ children }) => {
                 console.warn(error);
             }
         }
+        async function fetchUserToken() {
+            const token = getAuthToken();
+            if (!token) return console.warn("no token");
+            try {
+                const response = await fetch(`${route}/get-with-token/${token}`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: token
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user');
+                }
+                const data = await response.json();
+                setUser(data);
+                setIsloggedIn(true);
+            } catch (error) {
+                console.warn(error);
+                destroyAuthToken();
+                setUser(null);
+                setIsloggedIn(false);
+            }
+        }
         const token = getAuthToken();
         if (token) {
-            fetchUserWithToken(token);
+            fetchUserToken();
         } else {
             fetchUserInfo()
         }
-    }, [isLoggedIn]);
+    }, [isLoggedIn, route]);
 
     return (
         <AuthContext.Provider value={{ user, isLoggedIn, login, logout, updatePassword, updateEmail, updateProfileInfo, updateProfileFiles }}>

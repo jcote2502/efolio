@@ -19,7 +19,7 @@ const LinkForm = ({ onClose, selectedLink = null }) => {
             }
         }
         setLinks();
-    }, [])
+    }, [selectedLink])
 
     const platforms = ['Youtube', 'LinkedIn', 'X', 'Instagram', 'TikTok', 'Spotify', 'Github', 'other']
 

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { HStack, Button, Text, IconButton, VStack, Drawer, DrawerBody, DrawerOverlay, DrawerContent, DrawerHeader, DrawerCloseButton, useDisclosure, Divider } from "@chakra-ui/react";
+import { HStack, Button, Text, IconButton, VStack, Drawer, DrawerBody, DrawerOverlay, DrawerContent, DrawerHeader, DrawerCloseButton, useDisclosure } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useAuth } from "../contexts/Auth";
 import { useDownloads } from "../contexts/Downloads";

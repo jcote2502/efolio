@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Button, VStack, Text, Input, Image } from '@chakra-ui/react';
+import { Box, Button, VStack, Text, Input } from '@chakra-ui/react';
 import { useDropzone } from 'react-dropzone';
-import { useAuth } from '../../contexts/Auth'; // Import AuthContext
 import { useDownloads } from '../../contexts/Downloads';
 
 // New component for uploading PDFs

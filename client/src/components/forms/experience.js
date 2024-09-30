@@ -10,7 +10,7 @@ const ExperienceForm = ({ onClose, selectedExperience = null }) => {
 
     const { addExperience, updateExperience, deleteExperience } = useExperience();
     const [previousHref, setPreviousHref] = useState('');
-    const [error, setError] = useState(null)
+    // const [error, setError] = useState(null)
 
     const [experienceForm, setExperienceForm] = useState({
         title: '',
@@ -69,7 +69,7 @@ const ExperienceForm = ({ onClose, selectedExperience = null }) => {
         const startDate = new Date(`${startYear}-${startMonth}-01`);
         const stopDate = endYear && endMonth ? new Date(`${endYear}-${endMonth}-01`) : null;
         if (!validateDates(startDate, stopDate, isCurrentlyEmployed)) {
-            setError('Invalid Stop Date : Must be after Start Date.')
+            // setError('Invalid Stop Date : Must be after Start Date.')
             return
         }
         const updatedForm = {

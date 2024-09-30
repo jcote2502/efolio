@@ -115,8 +115,29 @@ export const ExperienceProvider = ({ children }) => {
 
     // Fetch experiences on component mount
     useEffect(() => {
-        fetchExperiences();
-    }, []);
+        
+    // Fetch all experiences for the site
+    const fetchExp = async () => {
+        try {
+            const response = await fetch(`${route}/site-experiences`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch experiences');
+            }
+
+            const data = await response.json();
+            setExperiences(data.experiences);
+        } catch (error) {
+            console.error('Error fetching experiences', error);
+        }
+    };
+    fetchExp();
+    }, [route]);
 
     return (
         <ExperienceContext.Provider value={{ experiences,callRefresh, addExperience, updateExperience, deleteExperience }}>

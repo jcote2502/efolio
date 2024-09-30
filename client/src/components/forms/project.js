@@ -9,7 +9,7 @@ import { UploadImage } from "../uploads/Photo";
 
 export const AddProjectForm = ({ onClose }) => {
     const { addProject } = useProject();
-    const [error, setError] = useState(null);
+    // const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const [projectForm, setProjectForm] = useState({
@@ -41,7 +41,7 @@ export const AddProjectForm = ({ onClose }) => {
         const startDate = new Date(`${startYear}-${startMonth}-01`);
         const stopDate = endYear && endMonth ? new Date(`${endYear}-${endMonth}-01`) : null;
         if (!validateDates(startDate, stopDate, isCurrent)) {
-            setError('Invalid Stop Date : Must be after Start Date.')
+            // setError('Invalid Stop Date : Must be after Start Date.')
             return
         }
         const updatedForm = {
@@ -148,7 +148,7 @@ export const AddProjectForm = ({ onClose }) => {
 export const EditProjectHeaderForm = ({ onClose }) => {
 
     const { project, updateProject } = useProject();
-    const [error, setError] = useState(null);
+    // const [error, setError] = useState(null);
 
     const [projectForm, setProjectForm] = useState(project);
 
@@ -196,7 +196,7 @@ export const EditProjectHeaderForm = ({ onClose }) => {
         const startDate = new Date(`${startYear}-${startMonth}-01`);
         const stopDate = endYear && endMonth ? new Date(`${endYear}-${endMonth}-01`) : null;
         if (!validateDates(startDate, stopDate, isCurrent)) {
-            setError('Invalid Stop Date : Must be after Start Date.')
+            // setError('Invalid Stop Date : Must be after Start Date.')
             console.log('hello');
             return
         }

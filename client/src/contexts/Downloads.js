@@ -8,29 +8,8 @@ const DownloadContext = createContext();
 export const DownloadProvider = ({ children }) => {
     const [downloads, setDownloads] = useState(null);
     const [resume, setResume] = useState(null);
-    const route = '/downloads';
+    const route = process.env.REACT_APP_API_URL ? `${process.env.REACT_APP_API_URL}/downloads` : '/api/downloads';
 
-
-    // Fetch downloads for the site
-    const fetchDownloads = async () => {
-        try {
-            const response = await fetch(`${route}/site-downloads`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch downloads');
-            }
-
-            const data = await response.json();
-            setDownloads(data);
-        } catch (error) {
-            console.error('Error fetching downloads', error);
-        }
-    };
 
 
     const fetchResume = async () => {
@@ -157,9 +136,28 @@ export const DownloadProvider = ({ children }) => {
 
     // Fetch downloads on component mount
     useEffect(() => {
-        fetchDownloads();
-        fetchResume();
-    }, []);
+        const fetchRes = async () => {
+            try {
+                const response = await fetch(`${route}/site-resume`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch downloads');
+                }
+
+                const data = await response.json();
+
+                setResume(data);
+            } catch (error) {
+                console.error('Error fetching downloads', error);
+            }
+        }
+        fetchRes();
+    }, [route]);
 
     return (
         <DownloadContext.Provider value={{ downloads, resume, updateResume, fetchResume, addResume, fetchDownloadById, addDownload, deleteDownload }}>

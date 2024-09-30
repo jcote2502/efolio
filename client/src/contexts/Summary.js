@@ -8,32 +8,11 @@ const SummaryContext = createContext();
 export const SummaryProvider = ({ children }) => {
     const [summary, setSummary] = useState(null);
     const [refresh, setRefresh] = useState(false);
-    const route = process.env.REACT_APP_API_URL ? `${process.env.REACT_APP_API_URL}/experiences` :  '/api/summaries';
+    const route = process.env.REACT_APP_API_URL ? `${process.env.REACT_APP_API_URL}/summaries` : '/api/summaries';
 
     const callRefresh = () => {
         setRefresh(!refresh);
     }
-
-    // Fetch all summaries for the user
-    const fetchSummary = async () => {
-        try {
-            const response = await fetch(`${route}/user-summary`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch summaries');
-            }
-
-            const data = await response.json();
-            setSummary(data.summary);
-        } catch (error) {
-            console.error('Error fetching summaries', error);
-        }
-    };
 
     // Add new summary
     const addSummary = async (newSummary) => {
@@ -52,7 +31,7 @@ export const SummaryProvider = ({ children }) => {
                 throw new Error('Failed to add summary');
             }
 
-            fetchSummary(); // Re-fetch summaries after adding a new one
+            setRefresh(!refresh)
         } catch (error) {
             console.error('Error adding summary', error);
         }
@@ -75,7 +54,7 @@ export const SummaryProvider = ({ children }) => {
                 throw new Error('Failed to update summary');
             }
 
-            fetchSummary(); // Re-fetch summaries after updating
+            setRefresh(!refresh)
         } catch (error) {
             console.error('Error updating summary', error);
         }
@@ -97,7 +76,7 @@ export const SummaryProvider = ({ children }) => {
                 throw new Error('Failed to delete summary');
             }
 
-            fetchSummary(); // Re-fetch summaries after deleting
+            setRefresh(!refresh)
         } catch (error) {
             console.error('Error deleting summary', error);
         }
@@ -105,8 +84,27 @@ export const SummaryProvider = ({ children }) => {
 
     // Fetch summaries on component mount
     useEffect(() => {
+        const fetchSummary = async () => {
+            try {
+                const response = await fetch(`${route}/user-summary`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch summaries');
+                }
+
+                const data = await response.json();
+                setSummary(data.summary);
+            } catch (error) {
+                console.error('Error fetching summaries', error);
+            }
+        };
         fetchSummary();
-    }, [refresh]);
+    }, [refresh, route]);
 
     return (
         <SummaryContext.Provider value={{ summary, callRefresh, addSummary, updateSummary, deleteSummary }}>

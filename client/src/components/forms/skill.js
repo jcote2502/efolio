@@ -16,7 +16,7 @@ const SkillsForm = ({ onClose, selectedSkill = null }) => {
             }
         }
         setSkills();
-    }, [])
+    }, [selectedSkill])
 
     const strengths = [
         { label: 'proficient', value: '1' },
