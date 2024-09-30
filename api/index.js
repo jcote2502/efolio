@@ -6,15 +6,10 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 
-
-const headshotImagePath = path.join(__dirname, '../headshot.jpg');
-
-
 connectDB().catch(console.dir);
 connectFirestore().catch(error => {
     console.error('error adding image', error);
 });
-
 
 app.use(express.json());
 
