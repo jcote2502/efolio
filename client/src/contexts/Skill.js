@@ -7,7 +7,7 @@ const SkillsContext = createContext();
 // Provide the SkillsContext to components
 export const SkillsProvider = ({ children }) => {
     const [skills, setSkills] = useState([]);
-    const route = process.env.REACT_APP_API_URL ? `${process.env.REACT_APP_API_URL}/experiences` : '/api/skills';
+    const route = process.env.REACT_APP_API_URL ? `${process.env.REACT_APP_API_URL}/skills` : '/api/skills';
 
 
     // Fetch all skills for the site
@@ -39,7 +39,7 @@ export const SkillsProvider = ({ children }) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token 
+                    Authorization: token
                 },
                 body: JSON.stringify({ skill: newSkill }),
             });
@@ -60,7 +60,7 @@ export const SkillsProvider = ({ children }) => {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: token 
+                    Authorization: token
                 },
                 body: JSON.stringify(newSkill),
             });
@@ -84,7 +84,7 @@ export const SkillsProvider = ({ children }) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization:  token 
+                    Authorization: token
                 },
             });
 
@@ -100,8 +100,27 @@ export const SkillsProvider = ({ children }) => {
 
     // Fetch skills on component mount
     useEffect(() => {
-        fetchSkills();
-    }, []);
+        const initialfetch = async () => {
+            try {
+                const response = await fetch(`${route}/site-skills`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch skills');
+                }
+
+                const data = await response.json();
+                setSkills(data.skills);
+            } catch (error) {
+                console.error('Error fetching skills', error);
+            }
+        };
+        initialfetch();
+    }, [route]);
 
     return (
         <SkillsContext.Provider value={{ skills, updateSkill, addSkill, deleteSkill }}>

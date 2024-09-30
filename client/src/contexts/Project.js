@@ -15,27 +15,6 @@ export const ProjectProvider = ({ children }) => {
         setRefresh(!refresh);
     }
 
-    // Fetch all projects for the site
-    const fetchProjects = async () => {
-        try {
-            const response = await fetch(`${route}/site-projects`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch projects');
-            }
-
-            const data = await response.json();
-            setProjects(data.projects.sort((a, b) => new Date(b.endDate) - new Date(a.endDate)));
-        } catch (error) {
-            console.error('Error fetching projects', error);
-        }
-    };
-
     // Fetch a specific project by ID
     const fetchProject = async (_id) => {
         try {
@@ -60,7 +39,7 @@ export const ProjectProvider = ({ children }) => {
     // Add new project
     const addProject = async (project) => {
         const token = getAuthToken();
-        
+
         try {
             const response = await fetch(`${route}/create`, {
                 method: 'POST',
@@ -75,7 +54,7 @@ export const ProjectProvider = ({ children }) => {
             }
             const _id = await response.json();
             fetchProject(_id);
-            fetchProjects();
+            setRefresh(!refresh);
             return (_id);
         } catch (error) {
             console.error('Error adding project', error);
@@ -106,7 +85,7 @@ export const ProjectProvider = ({ children }) => {
             }
 
             fetchProject(_id);
-            fetchProjects();
+            setRefresh(!refresh);
         } catch (error) {
             console.error('Error updating project', error);
         }
@@ -128,7 +107,7 @@ export const ProjectProvider = ({ children }) => {
                 throw new Error('Failed to delete project');
             }
 
-            fetchProjects(); // Re-fetch projects after deleting
+            setRefresh(!refresh);
         } catch (error) {
             console.error('Error deleting project', error);
         }
@@ -155,7 +134,7 @@ export const ProjectProvider = ({ children }) => {
             }
 
             fetchProject(_id);
-            fetchProjects();
+            setRefresh(!refresh);
         } catch (error) {
             console.error('Error add project section', error);
         }
@@ -182,7 +161,7 @@ export const ProjectProvider = ({ children }) => {
             }
 
             fetchProject(_id);
-            fetchProjects();
+            setRefresh(!refresh);
         } catch (error) {
             console.error('Error updating project section', error);
         }
@@ -198,14 +177,14 @@ export const ProjectProvider = ({ children }) => {
                     'Content-Type': 'application/json',
                     Authorization: token,
                 },
-                body: JSON.stringify( {section} )
+                body: JSON.stringify({ section })
             });
 
             if (!response.ok) {
                 throw new Error('Failed to delete project');
             }
             fetchProject(_id);
-            fetchProjects();
+            setRefresh(!refresh);
         } catch (error) {
             console.error('Error deleting project', error);
         }
@@ -213,8 +192,27 @@ export const ProjectProvider = ({ children }) => {
 
     // Fetch projects on component mount
     useEffect(() => {
-        fetchProjects();
-    }, [refresh]);
+        const initialfetch = async () => {
+            try {
+                const response = await fetch(`${route}/site-projects`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch projects');
+                }
+
+                const data = await response.json();
+                setProjects(data.projects.sort((a, b) => new Date(b.endDate) - new Date(a.endDate)));
+            } catch (error) {
+                console.error('Error fetching projects', error);
+            }
+        };
+        initialfetch();
+    }, [refresh,route]);
 
     return (
         <ProjectContext.Provider value={{ projects, project, callRefresh, addSection, updateSection, deleteSection, fetchProject, addProject, updateProject, deleteProject }}>

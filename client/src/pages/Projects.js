@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Text, Image, Flex, Spinner, VStack, HStack, useDisclosure } from '@chakra-ui/react';
+import { Box, Text, Image, VStack, HStack, useDisclosure } from '@chakra-ui/react';
 import { useProject } from '../contexts/Project';
 import { renderLoading } from '../utils';
 import AppCarousel from '../components/Carousel';

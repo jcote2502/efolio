@@ -115,8 +115,22 @@ export const EducationProvider = ({ children }) => {
 
     // Fetch educations on component mount
     useEffect(() => {
-        fetchEducations();
-    }, []);
+        const fetchEdu = async () => {
+            try {
+                const response = await fetch(`${route}/site-educations`);
+    
+                if (!response.ok) {
+                    throw new Error('Failed to fetch educations');
+                }
+    
+                const data = await response.json();
+                setEducations(data);
+            } catch (error) {
+                console.error('Error fetching educations', error);
+            }
+        };
+        fetchEdu();
+    }, [route]);
 
     return (
         <EducationContext.Provider value={{ educations, addEducation, updateEducation, deleteEducation }}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Heading, Text, Image, VStack, AspectRatio } from "@chakra-ui/react";
+import { Box, Text, Image, VStack } from "@chakra-ui/react";
 import YouTube from 'react-youtube';
 
 
@@ -16,7 +16,7 @@ export const AboutSectionCard = ({ index, item, isAdmin, onClick = () => { } }) 
             }
         }
         embed();
-    }, [])
+    }, [item.isLink, item.video])
 
     useEffect(() => {
         const handleScroll = () => {

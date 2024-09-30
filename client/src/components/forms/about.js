@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
     Box,
     Button,
-    Flex,
     FormControl,
     FormLabel,
     Input,
@@ -49,7 +48,7 @@ const AboutForm = ({ onClose, selectedSection }) => {
         }
 
         populateForm();
-    }, []);
+    }, [selectedSection]);
 
     const handleTextChange = (field, value) => {
         const updatedFormState = {

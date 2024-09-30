@@ -58,7 +58,7 @@ export const renderMonthOptions = () => (
 )
 
 export const renderYearOptions = () => {
-    const date = new Date;
+    const date = new Date();
     const currentYear = date.getFullYear()
     return (
         Array.from({ length: currentYear - 1980 + 1 }, (_, i) => (

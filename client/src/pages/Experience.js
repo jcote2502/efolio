@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { VStack, Wrap, Text, Box, Divider, useDisclosure, Button } from "@chakra-ui/react";
+import { VStack, Wrap, Text, Box, useDisclosure } from "@chakra-ui/react";
 import ExperienceCard from "../components/cards/Experience";
 import PageFrame, { PageButton } from "../components/Frame";
 import { useExperience } from "../contexts/Experience";

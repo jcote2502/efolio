@@ -1,4 +1,4 @@
-import { HStack, IconButton, Image, Text, VStack } from "@chakra-ui/react";
+import { HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { useAuth } from "../contexts/Auth";
 import { useLink } from "../contexts/Link";
 import { ContactForm } from "../components/forms/contact";
@@ -8,16 +8,6 @@ import { LinkDisplay } from "../components/Links";
 const Contact = () => {
     const { user } = useAuth();
     const { links } = useLink();
-    const linksData = [
-        {
-            href: 'https://www.github.com',
-            siteHandle: 'github',
-        },
-        {
-            href: 'https://www.linkedin.com',
-            siteHandle: 'linkedin',
-        },
-    ];
 
     return (
         <PageFrame>
@@ -28,11 +18,11 @@ const Contact = () => {
                         <Text whiteSpace='nowrap' fontSize='80px' fontFamily='body' fontWeight='bold' color='appColors.barelyGrey'>Find Me On</Text>
 
                         {/* Links */}
-                            <HStack w='800px' pb='10px' wrap='wrap' justifyContent='center'>
-                                {links ? links.map((item, index) => (
-                                    <LinkDisplay isDisplay={true} item={item} index={index} onClick={() => window.open(item.href, '_blank')} />
-                                )) : <Text>Add Some Skills Below !</Text>}
-                            </HStack>
+                        <HStack w='800px' pb='10px' wrap='wrap' justifyContent='center'>
+                            {links ? links.map((item, index) => (
+                                <LinkDisplay isDisplay={true} item={item} index={index} onClick={() => window.open(item.href, '_blank')} />
+                            )) : <Text>Add Some Skills Below !</Text>}
+                        </HStack>
 
                         <Text whiteSpace='nowrap' fontSize='68px' fontFamily='body' fontWeight='bold' color='appColors.barelyGrey' >Contact Me At</Text>
                         {/* Check if user is defined before accessing its properties */}

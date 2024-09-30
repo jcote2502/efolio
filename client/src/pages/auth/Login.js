@@ -1,6 +1,5 @@
 
-import { Link as RouterLink } from "react-router-dom";
-import { Flex, Heading, Input, Button, InputGroup, Stack, InputLeftElement, chakra, Box, Link, Avatar, FormControl, InputRightElement } from "@chakra-ui/react";
+import { Flex, Heading, Input, Button, InputGroup, Stack, InputLeftElement, chakra, Box, Avatar, FormControl, InputRightElement } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 
 import { useState } from "react";
